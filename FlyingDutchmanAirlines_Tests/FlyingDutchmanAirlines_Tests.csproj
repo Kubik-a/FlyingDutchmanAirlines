@@ -20,4 +20,8 @@
     <ProjectReference Include="..\FlyingDutchmanAirlines\FlyingDutchmanAirlines.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ServiceLayer\" />
+  </ItemGroup>
+
 </Project>
