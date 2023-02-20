@@ -2,12 +2,24 @@
 using FlyingDutchmanAirlines.DatabaseLayer.Models;
 using FlyingDutchmanAirlines.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace FlyingDutchmanAirlines.RepositoryLayer
 {
     public class CustomerRepository
     {
         private readonly FlyingDutchmanAirlinesContext _context;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public CustomerRepository()
+        {
+            //This avoid this constructor to be invoked in FlyingDutchmanAirlines
+            if (Assembly.GetExecutingAssembly().FullName == Assembly.GetCallingAssembly().FullName)
+            {
+                throw new Exception("This constructor should only be used for testing");
+            }
+        }
 
         public CustomerRepository(FlyingDutchmanAirlinesContext context)
         {
@@ -38,7 +50,7 @@ namespace FlyingDutchmanAirlines.RepositoryLayer
             return true;
         }
 
-        public async Task<Customer> GetCustomerByName(string customerName)
+        public virtual async Task<Customer> GetCustomerByName(string customerName)
         {
             if (IsInvalidCustomerName(customerName))
             {
