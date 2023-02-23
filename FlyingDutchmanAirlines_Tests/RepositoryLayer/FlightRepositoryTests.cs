@@ -9,6 +9,7 @@ using FlyingDutchmanAirlines_Tests.Stubs;
 using FlyingDutchmanAirlines_Tests.Stubs.FlyingDutchmanAirlines_Tests.Stubs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NuGet.Frameworks;
 
 namespace FlyingDutchmanAirlines_Tests.RepositoryLayer
 {
@@ -32,7 +33,9 @@ namespace FlyingDutchmanAirlines_Tests.RepositoryLayer
                 Destination = 2
             };
 
+
             _context.Flights.Add(flight);
+
             await _context.SaveChangesAsync();
 
             _repository = new FlightRepository(_context);
@@ -66,6 +69,20 @@ namespace FlyingDutchmanAirlines_Tests.RepositoryLayer
         public async Task GetFlightByFlightNumber_Failure_DatabaseException()
         {
             await _repository.GetFlightByFlightNumber(2);
+        }
+
+        [TestMethod]
+        public void GetFlights_Success()
+        {
+            Queue<Flight> flights = _repository.GetFlights();
+            Assert.IsNotNull(flights);
+
+            Flight dbFlight = _context.Flights.First(f => f.FlightNumber == 1);
+            Assert.IsNotNull(dbFlight);
+
+            Assert.AreEqual(dbFlight.FlightNumber, flights.Peek().FlightNumber);
+            Assert.AreEqual(dbFlight.Origin, flights.Peek().Origin);
+            Assert.AreEqual(dbFlight.Destination, flights.Peek().Destination);
         }
     }
 }
