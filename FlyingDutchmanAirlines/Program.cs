@@ -11,9 +11,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient(typeof(FlightService), typeof(FlightService));
+builder.Services.AddTransient(typeof(BookingService), typeof(BookingService));
+builder.Services.AddTransient(typeof(CustomerRepository), typeof(CustomerRepository));
 builder.Services.AddTransient(typeof(FlightRepository), typeof(FlightRepository));
 builder.Services.AddTransient(typeof(AirportRepository), typeof(AirportRepository));
 builder.Services.AddTransient(typeof(FlyingDutchmanAirlinesContext),typeof(FlyingDutchmanAirlinesContext));
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

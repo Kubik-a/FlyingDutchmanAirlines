@@ -2,6 +2,8 @@
 using FlyingDutchmanAirlines.Exceptions;
 using FlyingDutchmanAirlines.RepositoryLayer;
 using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
 namespace FlyingDutchmanAirlines.ServiceLayer
@@ -12,6 +14,15 @@ namespace FlyingDutchmanAirlines.ServiceLayer
         private readonly CustomerRepository _customerRepository;
         private readonly FlightRepository _flightRepository;
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public BookingService()
+        {
+            if (Assembly.GetExecutingAssembly().FullName == Assembly.GetCallingAssembly().FullName)
+            {
+                throw new Exception("This constructor should only be used for testing");
+            }
+        }
+
         public BookingService(BookingRepository bookingRepository, CustomerRepository customerRepository, FlightRepository flightRepository)
         {
             _bookingRepository = bookingRepository;
@@ -19,7 +30,7 @@ namespace FlyingDutchmanAirlines.ServiceLayer
             _flightRepository = flightRepository;
         }
 
-        public async Task<(bool, Exception)> CreateBooking(string name, int flightNumber)
+        public virtual async Task<(bool, Exception)> CreateBooking(string name, int flightNumber)
         {
             if (string.IsNullOrEmpty(name) || !flightNumber.IsPositive())
             {

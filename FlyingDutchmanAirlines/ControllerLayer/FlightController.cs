@@ -16,6 +16,9 @@ namespace FlyingDutchmanAirlines.ControllerLayer
             _service = service;
         }
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetFlights()
         {
             try
@@ -40,6 +43,9 @@ namespace FlyingDutchmanAirlines.ControllerLayer
         }
 
         [HttpGet("{flightNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetFlightByFlightNumber(int flightNumber)
         {
             try
